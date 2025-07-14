@@ -3,7 +3,7 @@ const products = [
     {
         id: 1,
         name: "Premium Cashews",
-        price: "₹450/kg",
+        price: "₹1200/kg",
         description: "Fresh, organic cashews sourced directly from local farms. Rich in healthy fats, protein, and essential minerals. Perfect for snacking or cooking.",
         image: "images/cashews.jpg",
         category: "nuts"
@@ -11,7 +11,7 @@ const products = [
     {
         id: 2,
         name: "Organic Brown Rice",
-        price: "₹80/kg",
+        price: "₹200/kg",
         description: "Nutritious whole grain brown rice, unpolished and rich in fiber. Ideal for healthy meals and better digestion.",
         image: "images/brown-rice.jpg",
         category: "grains"
@@ -19,7 +19,7 @@ const products = [
     {
         id: 3,
         name: "Peanuts",
-        price: "₹120/kg",
+        price: "₹150/kg",
         description: "Peanuts with natural flavor. High in protein and healthy fats. Great for snacking and cooking.",
         image: "images/peanuts.jpg",
         category: "nuts"
@@ -27,13 +27,13 @@ const products = [
     {
         id: 4,
         name: "Pure Sesame Seeds",
-        price: "₹200/kg",
+        price: "₹180/kg",
         description: "Premium quality sesame seeds, rich in calcium and healthy oils. Perfect for cooking, baking, and garnishing.",
         image: "images/sesame-seeds.jpg",
         category: "seeds"
     },
     {
-        id: 6,
+        id: 5,
         name: "Organic Coffee Beans",
         price: "₹400/kg",
         description: "Premium arabica coffee beans, organically grown and freshly roasted. Rich aroma and smooth taste for coffee lovers.",
@@ -41,7 +41,7 @@ const products = [
         category: "beverages"
     },
     {
-        id: 7,
+        id: 6,
         name: "Natural Tea Leaves",
         price: "₹250/kg",
         description: "Hand-picked tea leaves from organic gardens. Fresh, aromatic, and full of natural antioxidants for a healthy lifestyle.",
@@ -160,22 +160,95 @@ function setupContactForm() {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get form data
+        // Get form data using name attributes
         const formData = new FormData(this);
-        const name = this.querySelector('input[type="text"]').value;
-        const email = this.querySelector('input[type="email"]').value;
-        const phone = this.querySelector('input[type="tel"]').value;
-        const message = this.querySelector('textarea').value;
+        const name = formData.get('name') || '';
+        const email = formData.get('email') || '';
+        const phone = formData.get('phone') || '';
+        const message = formData.get('message') || '';
         
-        // Simulate form submission
-        showNotification('Thank you for your message! We will get back to you soon.', 'success');
+        // Validate required fields
+        if (!name.trim() || !email.trim() || !message.trim()) {
+            showNotification('Please fill in all required fields.', 'error');
+            return;
+        }
+        
+        // Send WhatsApp notification
+        sendWhatsAppNotification({ name, email, phone, message });
+        
+        // Show success notification
+        showNotification('Thank you for your message! Opening WhatsApp to send notification...', 'success');
         
         // Reset form
         this.reset();
         
-        // In a real application, you would send this data to a server
         console.log('Contact form submitted:', { name, email, phone, message });
     });
+}
+
+// Format contact form data into a WhatsApp message
+function formatContactMessage(data) {
+    const { name, email, phone, message } = data;
+    
+    let whatsappMessage = `🌱 *New Contact Form Submission - Amudham Naturals*\n\n`;
+    whatsappMessage += `👤 *Name:* ${name}\n`;
+    whatsappMessage += `📧 *Email:* ${email}\n`;
+    
+    if (phone && phone.trim()) {
+        whatsappMessage += `📱 *Phone:* ${phone}\n`;
+    }
+    
+    whatsappMessage += `\n💬 *Message:*\n${message}\n\n`;
+    whatsappMessage += `---\n`;
+    whatsappMessage += `📱 Sent from: amudhamnaturals.com`;
+    
+    return whatsappMessage;
+}
+
+// Send WhatsApp notification
+function sendWhatsAppNotification(formData) {
+    try {
+        const whatsappPhone = '919486225762'; // Amudha's WhatsApp number
+        const formattedMessage = formatContactMessage(formData);
+        const encodedMessage = encodeURIComponent(formattedMessage);
+        const whatsappUrl = `https://wa.me/${whatsappPhone}?text=${encodedMessage}`;
+        
+        // Open WhatsApp Web in a new tab
+        const whatsappWindow = window.open(whatsappUrl, '_blank');
+        
+        // Check if popup was blocked
+        if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed == 'undefined') {
+            // Fallback: show manual link
+            showWhatsAppFallback(whatsappUrl);
+        }
+        
+        console.log('WhatsApp notification sent:', formattedMessage);
+        
+    } catch (error) {
+        console.error('Error sending WhatsApp notification:', error);
+        showNotification('Error opening WhatsApp. Please try again.', 'error');
+    }
+}
+
+// Show fallback option if WhatsApp popup is blocked
+function showWhatsAppFallback(whatsappUrl) {
+    const fallbackMessage = `
+        <div style="text-align: center;">
+            <p>Click the button below to open WhatsApp:</p>
+            <a href="${whatsappUrl}" target="_blank" style="
+                display: inline-block;
+                background: #25D366;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+                margin-top: 10px;
+            ">📱 Open WhatsApp</a>
+        </div>
+    `;
+    
+    showCustomNotification(fallbackMessage, 'info', 8000);
 }
 
 // Contact for specific product
@@ -225,14 +298,28 @@ function setupScrollAnimations() {
 
 // Show notification
 function showNotification(message, type = 'info') {
+    showCustomNotification(message, type, 5000);
+}
+
+// Show custom notification with HTML content and custom duration
+function showCustomNotification(content, type = 'info', duration = 5000) {
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
+    
+    let backgroundColor;
+    switch(type) {
+        case 'success': backgroundColor = '#4CAF50'; break;
+        case 'error': backgroundColor = '#f44336'; break;
+        case 'info':
+        default: backgroundColor = '#2196F3'; break;
+    }
+    
     notification.style.cssText = `
         position: fixed;
         top: 100px;
         right: 20px;
-        background: ${type === 'success' ? '#4CAF50' : '#2196F3'};
+        background: ${backgroundColor};
         color: white;
         padding: 15px 20px;
         border-radius: 5px;
@@ -240,11 +327,18 @@ function showNotification(message, type = 'info') {
         z-index: 10000;
         font-family: 'Poppins', sans-serif;
         font-weight: 500;
-        max-width: 300px;
+        max-width: 350px;
         transform: translateX(100%);
         transition: transform 0.3s ease;
+        line-height: 1.4;
     `;
-    notification.textContent = message;
+    
+    // Set content (can be HTML or text)
+    if (content.includes('<')) {
+        notification.innerHTML = content;
+    } else {
+        notification.textContent = content;
+    }
     
     document.body.appendChild(notification);
     
@@ -253,7 +347,7 @@ function showNotification(message, type = 'info') {
         notification.style.transform = 'translateX(0)';
     }, 100);
     
-    // Remove after 5 seconds
+    // Remove after specified duration
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
         setTimeout(() => {
@@ -261,7 +355,7 @@ function showNotification(message, type = 'info') {
                 notification.parentNode.removeChild(notification);
             }
         }, 300);
-    }, 5000);
+    }, duration);
 }
 
 // Header scroll effect
@@ -335,15 +429,26 @@ function formatPhoneForWhatsApp(phone) {
     }
 }
 
-// Quick WhatsApp contact (for future enhancement)
+// Quick WhatsApp contact (for product inquiries)
 function contactViaWhatsApp(productName = '') {
-    const phone = '919486225762'; // Amudha's phone number
-    const message = productName 
-        ? `Hi, I'm interested in ${productName} from Amudham Naturals. Please provide more details.`
-        : 'Hi, I would like to know more about your organic products.';
-    
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    try {
+        const phone = '919486225762'; // Amudha's phone number
+        const message = productName
+            ? `🌱 *Product Inquiry - Amudham Naturals*\n\nHi, I'm interested in *${productName}*. Please provide more details about:\n\n• Availability\n• Pricing\n• Quality specifications\n• Delivery options\n\nThank you!\n\n---\n📱 Sent from: amudhamnaturals.com`
+            : `🌱 *General Inquiry - Amudham Naturals*\n\nHi, I would like to know more about your organic products.\n\nPlease share details about:\n• Available products\n• Pricing\n• Quality certifications\n• Delivery options\n\nThank you!\n\n---\n📱 Sent from: amudhamnaturals.com`;
+        
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        const whatsappWindow = window.open(whatsappUrl, '_blank');
+        
+        // Check if popup was blocked
+        if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed == 'undefined') {
+            showWhatsAppFallback(whatsappUrl);
+        }
+        
+    } catch (error) {
+        console.error('Error opening WhatsApp:', error);
+        showNotification('Error opening WhatsApp. Please try again.', 'error');
+    }
 }
 
 // Initialize everything when page loads
