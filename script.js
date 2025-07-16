@@ -50,6 +50,106 @@ const products = [
     },
 ];
 
+// Process data for each product
+const processData = [
+    {
+        id: 1,
+        productName: "Premium Cashews",
+        videoUrl: "", // YouTube embed link
+        steps: [
+            "Hand-picked from organic cashew trees",
+            "Carefully removed from shells using traditional methods",
+            "Steam processed to remove natural toxins",
+            "Sun-dried to preserve natural flavors",
+            "Quality checked and sorted by size"
+        ],
+        highlight: {
+            title: "Traditional Processing",
+            description: "Our cashews are processed using time-tested methods that preserve their natural taste and nutritional value."
+        }
+    },
+    {
+        id: 2,
+        productName: "Organic Brown Rice",
+        videoUrl: "https://www.youtube.com/embed/l-d3SWn9jY0", // Placeholder for YouTube link
+        steps: [
+            "Harvested from certified organic paddy fields",
+            "Cleaned to remove impurities and stones",
+            "Hulled while preserving the nutritious bran layer",
+            "Sorted and graded for consistent quality",
+            "Packed in moisture-proof containers"
+        ],
+        highlight: {
+            title: "Minimal Processing",
+            description: "We preserve the natural bran layer that contains essential nutrients, fiber, and vitamins."
+        }
+    },
+    {
+        id: 3,
+        productName: "Peanuts",
+        videoUrl: "", // Placeholder for YouTube link
+        steps: [
+            "Harvested from pesticide-free farms",
+            "Cleaned and sorted to remove damaged nuts",
+            "Roasted at optimal temperatures for flavor",
+            "Cooled naturally to maintain crispness",
+            "Quality tested for freshness and taste"
+        ],
+        highlight: {
+            title: "Perfect Roasting",
+            description: "Our roasting process enhances the natural nutty flavor while maintaining nutritional integrity."
+        }
+    },
+    {
+        id: 4,
+        productName: "Pure Sesame Seeds",
+        videoUrl: "", // Placeholder for YouTube link
+        steps: [
+            "Sourced from organic sesame farms",
+            "Winnowed to separate seeds from pods",
+            "Cleaned using natural air-flow methods",
+            "Sun-dried to reduce moisture content",
+            "Sieved and sorted for uniform quality"
+        ],
+        highlight: {
+            title: "Natural Cleaning",
+            description: "We use traditional winnowing and air-flow methods to ensure pure, chemical-free sesame seeds."
+        }
+    },
+    {
+        id: 5,
+        productName: "Organic Coffee Beans",
+        videoUrl: "", // Placeholder for YouTube link
+        steps: [
+            "Hand-picked from shade-grown coffee plants",
+            "Pulped to remove outer cherry skin",
+            "Fermented naturally for 12-24 hours",
+            "Washed and sun-dried on raised beds",
+            "Roasted in small batches for freshness"
+        ],
+        highlight: {
+            title: "Artisan Roasting",
+            description: "Small-batch roasting ensures each bean reaches its optimal flavor profile and aroma."
+        }
+    },
+    {
+        id: 6,
+        productName: "Natural Tea Leaves",
+        videoUrl: "", // Placeholder for YouTube link
+        steps: [
+            "Plucked early morning from organic gardens",
+            "Withered naturally to reduce moisture",
+            "Rolled gently to release natural oils",
+            "Oxidized under controlled conditions",
+            "Dried and sorted by leaf grade"
+        ],
+        highlight: {
+            title: "Traditional Methods",
+            description: "Our tea processing follows centuries-old techniques that preserve the delicate flavors and antioxidants."
+        }
+    }
+];
+
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the website
@@ -57,6 +157,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load products
     loadProducts();
+    
+    // Load process section
+    loadProcessSection();
     
     // Setup navigation
     setupNavigation();
@@ -100,6 +203,44 @@ function loadProducts() {
         const productCard = createProductCard(product);
         productGrid.appendChild(productCard);
     });
+}
+
+// Load and display process section
+function loadProcessSection() {
+    const processGrid = document.getElementById('processGrid');
+    if (!processGrid) return;
+    
+    processGrid.innerHTML = '';
+    
+    processData.forEach(process => {
+        const processCard = createProcessCard(process);
+        processGrid.appendChild(processCard);
+    });
+}
+
+// Create individual process card
+function createProcessCard(process) {
+    const card = document.createElement('div');
+    card.className = 'process-card fade-in';
+    
+    card.innerHTML = `
+        <div class="process-video">
+            ${process.videoUrl ?
+                `<iframe src="${process.videoUrl}" title="${process.productName} Process" allowfullscreen></iframe>` :
+                `<div class="video-placeholder">
+                    <div class="play-icon">▶</div>
+                    <h4>${process.productName}</h4>
+                    <p>Video coming soon</p>
+                </div>`
+            }
+        </div>
+        <div class="process-info">
+            <h3>${process.productName}</h3>
+            <p class="process-summary">${process.highlight.description}</p>
+        </div>
+    `;
+    
+    return card;
 }
 
 // Create individual product card
