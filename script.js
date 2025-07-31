@@ -63,7 +63,7 @@ const processData = [
     {
         id: 2,
         productName: "Organic Brown Rice",
-        videoUrl: "https://www.youtube.com/embed/l-d3SWn9jY0", // Placeholder for YouTube link
+        videoUrl: "", //"https://www.youtube.com/embed/l-d3SWn9jY0", // Placeholder for YouTube link
         steps: [
             "Harvested from certified organic paddy fields",
             "Cleaned to remove impurities and stones",
