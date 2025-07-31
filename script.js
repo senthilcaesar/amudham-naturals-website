@@ -2,52 +2,44 @@
 const products = [
     {
         id: 1,
-        name: "Premium Cashews",
+        name: "Cashew (முந்திரிப்பருப்பு)",
         price: "₹1200/kg",
-        description: "Fresh, organic cashews sourced directly from local farms. Rich in healthy fats, protein, and essential minerals. Perfect for snacking or cooking.",
+        description: "A nutrient-dense nut, are rich in healthy fats, protein, and essential minerals like magnesium and zinc. They support heart health, strengthen bones, boost brain function, and enhance skin health - making them a tasty and nourishing addition to any diet.",
         image: "images/cashews.jpg",
         category: "nuts"
     },
     {
         id: 2,
-        name: "Organic Brown Rice",
+        name: "Karuppu Kavuni Rice (கருப்பு கவுனி அரிசி)",
         price: "₹200/kg",
-        description: "Nutritious whole grain brown rice, unpolished and rich in fiber. Ideal for healthy meals and better digestion.",
-        image: "images/brown-rice.jpg",
+        description: "An ancient Tamil Nadu heritage grain, is packed with antioxidants, fiber, and essential minerals. It supports heart health, aids digestion, regulates blood sugar, and boosts immunity - making it a powerful, natural addition to a healthy diet.",
+        image: "images/Karupu-Kavuni.png",
         category: "grains"
     },
     {
         id: 3,
-        name: "Peanuts",
-        price: "₹150/kg",
-        description: "Peanuts with natural flavor. High in protein and healthy fats. Great for snacking and cooking.",
-        image: "images/peanuts.jpg",
+        name: "Aged palm jaggery (பழைய கருப்பட்டி)",
+        price: "₹600/kg",
+        description: "A traditional natural sweetener, is rich in iron, minerals, and antioxidants. It aids digestion, improves immunity, purifies blood, and helps fight fatigue - making it a healthy alternative to refined sugar.",
+        image: "images/Old-Karupatti.png",
         category: "nuts"
     },
     {
         id: 4,
-        name: "Pure Sesame Seeds",
-        price: "₹180/kg",
-        description: "Premium quality sesame seeds, rich in calcium and healthy oils. Perfect for cooking, baking, and garnishing.",
-        image: "images/sesame-seeds.jpg",
-        category: "seeds"
+        name: "Peanuts (நிலக்கடலை)",
+        price: "₹160/kg",
+        description: "A protein-rich legume, are packed with healthy fats, fiber, and essential vitamins. They support heart health, boost energy, aid brain function, and help in muscle growth - making them a wholesome, everyday snack.",
+        image: "images/Peanuts.png",
+        category: "nuts"
     },
-    {
-        id: 5,
-        name: "Organic Coffee Beans",
-        price: "₹400/kg",
-        description: "Premium arabica coffee beans, organically grown and freshly roasted. Rich aroma and smooth taste for coffee lovers.",
-        image: "images/coffee-beans.jpg",
-        category: "beverages"
-    },
-    {
-        id: 6,
-        name: "Natural Tea Leaves",
-        price: "₹250/kg",
-        description: "Hand-picked tea leaves from organic gardens. Fresh, aromatic, and full of natural antioxidants for a healthy lifestyle.",
-        image: "images/tea-leaves.jpg",
-        category: "beverages"
-    },
+    //{
+    //   id: 6,
+    //    name: "Natural Tea Leaves (இயற்கை தேயிலை",
+    //    price: "₹500/kg",
+    //    description: "Hand-picked tea leaves from organic gardens. Fresh, aromatic, and full of natural antioxidants for a healthy lifestyle.",
+    //    image: "images/tea-leaves.jpg",
+    //    category: "beverages"
+    //},
 ];
 
 // Process data for each product
