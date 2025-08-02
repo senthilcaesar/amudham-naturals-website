@@ -2,8 +2,8 @@
 const products = [
     {
         id: 1,
-        name: "Cashew (முந்திரிப்பருப்பு)",
-        price: "₹1200/kg",
+        name: "Premium Cashew (முந்திரிப்பருப்பு)",
+        price: "₹1199/kg",
         description: "A nutrient-dense nut, are rich in healthy fats, protein, and essential minerals like magnesium and zinc. They support heart health, strengthen bones, boost brain function, and enhance skin health - making them a tasty and nourishing addition to any diet.",
         image: "images/cashews.jpg",
         category: "nuts"
@@ -11,7 +11,7 @@ const products = [
     {
         id: 2,
         name: "Karuppu Kavuni Rice (கருப்பு கவுனி அரிசி)",
-        price: "₹200/kg",
+        price: "₹199/kg",
         description: "An ancient Tamil Nadu heritage grain, is packed with antioxidants, fiber, and essential minerals. It supports heart health, aids digestion, regulates blood sugar, and boosts immunity - making it a powerful, natural addition to a healthy diet.",
         image: "images/Karupu-Kavuni.png",
         category: "grains"
@@ -19,7 +19,7 @@ const products = [
     {
         id: 3,
         name: "Aged palm jaggery (பழைய கருப்பட்டி)",
-        price: "₹600/kg",
+        price: "₹599/kg",
         description: "A traditional natural sweetener, is rich in iron, minerals, and antioxidants. It aids digestion, improves immunity, purifies blood, and helps fight fatigue - making it a healthy alternative to refined sugar.",
         image: "images/Old-Karupatti.png",
         category: "nuts"
@@ -292,29 +292,29 @@ function setupContactForm() {
     
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         // Get form data using name attributes
         const formData = new FormData(this);
         const name = formData.get('name') || '';
         const email = formData.get('email') || '';
         const phone = formData.get('phone') || '';
         const message = formData.get('message') || '';
-        
+
         // Validate required fields
         if (!name.trim() || !email.trim() || !message.trim()) {
             showNotification('Please fill in all required fields.', 'error');
             return;
         }
-        
-        // Send WhatsApp notification
-        sendWhatsAppNotification({ name, email, phone, message });
-        
-        // Show success notification
-        showNotification('Thank you for your message! Opening WhatsApp to send notification...', 'success');
-        
+
+        // Create Gmail link
+        const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=amudhamnaturals@gmail.com&su=New%20Contact%20Form%20Submission&body=Name:%20${encodeURIComponent(name)}%0AEmail:%20${encodeURIComponent(email)}%0APhone:%20${encodeURIComponent(phone)}%0A%0AMessage:%0A${encodeURIComponent(message)}`;
+
+        // Open Gmail with pre-filled email
+        window.open(gmailLink, '_blank');
+
         // Reset form
         this.reset();
-        
+
         console.log('Contact form submitted:', { name, email, phone, message });
     });
 }
